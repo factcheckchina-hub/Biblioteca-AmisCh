@@ -23,8 +23,7 @@ on:
       - "config.json"
       - "overrides.json"
       - "scripts/**"
-      - ".github/workflows/**"
-
+      
 permissions:
   contents: write
   pages: write
