@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Biblioteca de la Amistad</title>
+  <meta name="description" content="Biblioteca digital de la Asociación de Amistad con China: textos por colección y por autor.">
+  <meta name="theme-color" content="#a3141f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preload" href="fonts/serif.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    /* Aplica el tema guardado antes de pintar, para evitar el parpadeo. */
+    try { var t = JSON.parse(localStorage.getItem('aach:theme')); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+
+  <header class="masthead">
+    <div class="wrap">
+      <a class="brand" href="#/" aria-label="Biblioteca de la Amistad, inicio">
+        <img src="icons/logo-128.png" width="48" height="48" alt="">
+        <span>
+          <span class="brand-name" id="brand-name">Biblioteca de la Amistad</span>
+          <span class="brand-sub" id="brand-sub">Asociación de Amistad con China</span>
+        </span>
+      </a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Cambiar entre tema claro y oscuro"></button>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="wrap">
+      <div class="search" role="search">
+        <svg class="lens" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Buscar por título, autor o colección" aria-label="Buscar en la biblioteca" autocomplete="off" enterkeyhint="search">
+        <button class="icon-btn clear" id="clear" type="button" aria-label="Borrar búsqueda" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <nav class="tabs" aria-label="Secciones">
+        <a href="#/" data-tab="">Colecciones</a>
+        <a href="#/autores" data-tab="autores">Autores</a>
+        <a href="#/todos" data-tab="todos">Todos</a>
+        <a href="#/favoritos" data-tab="favoritos">Favoritos</a>
+      </nav>
+    </div>
+  </div>
+
+  <main id="main" tabindex="-1"><div class="wrap"></div></main>
+
+  <dialog class="sheet" id="sheet"></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>

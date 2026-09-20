@@ -1,0 +1,8 @@
+{
+  "_ayuda": "Correcciones manuales. 'books': clave = ruta del libro dentro de la carpeta (ej. 'Teóricos Chinos/Yuk Hui/Fragmento.pdf') o su id. 'authors': unifica variantes de un mismo autor.",
+  "books": {
+  },
+  "authors": {
+    "Zhang Weiying.": "Zhang Weiying"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "folderId": "1E3_cd0FpJ7DnrC8Czx6H5K1lWv7lM-gP",
+  "siteTitle": "Biblioteca de la Amistad",
+  "siteSubtitle": "Asociación de Amistad con China",
+
+  "authorFolderCollections": ["Teóricos Chinos"],
+  "authorFromFilename": false,
+  "authorFromMetadata": false,
+
+  "collectionOrder": [
+    "Teóricos Chinos",
+    "Teoría del PCCH",
+    "Revolución Cultural",
+    "Palabras clave de China",
+    "Mitología China"
+  ],
+  "unknownCollection": "Otros textos",
+
+  "extensions": ["pdf", "epub", "mobi", "azw3", "docx", "doc", "txt", "rtf", "odt"],
+  "maxDownloadMB": 150,
+  "maxNewCoversPerRun": 300,
+  "coverWidth": 400
+}
