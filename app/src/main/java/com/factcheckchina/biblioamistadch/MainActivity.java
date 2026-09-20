@@ -1,6 +1,5 @@
 package com.factcheckchina.biblioamistadch;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,48 +7,53 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String HOME_URL = "https://factcheckchina-hub.github.io/Biblioteca-AmisCh/";
     private WebView webView;
+    private static final String HOME = "https://factcheckchina-hub.github.io/Biblioteca-AmisCh/";
 
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         webView = findViewById(R.id.webview);
-        WebSettings s = webView.getSettings();
-        s.setJavaScriptEnabled(true);
-        s.setDomStorageEnabled(true);
-        s.setDatabaseEnabled(true);
-        s.setAllowFileAccess(false);
-        s.setAllowContentAccess(false);
-        s.setBuiltInZoomControls(false);
-        s.setDisplayZoomControls(false);
-        s.setSupportZoom(false);
-        s.setLoadsImagesAutomatically(true);
+
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setSupportZoom(false);
+        settings.setAllowFileAccess(false);
+        settings.setAllowContentAccess(false);
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
-                if ("factcheckchina-hub.github.io".equals(uri.getHost())) return false;
-                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                return true;
-            }
-            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Uri uri = Uri.parse(url);
-                if ("factcheckchina-hub.github.io".equals(uri.getHost())) return false;
+                String host = uri.getHost();
+                if (host != null && host.equals("factcheckchina-hub.github.io")) {
+                    return false;
+                }
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 return true;
             }
         });
-        webView.loadUrl(HOME_URL);
+
+        webView.loadUrl(HOME);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override public void handleOnBackPressed() {
-                if (webView.canGoBack()) webView.goBack(); else finish();
+            @Override
+            public void handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    finish();
+                }
             }
         });
     }

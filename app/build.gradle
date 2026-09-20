@@ -1,7 +1,11 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+}
+
 android {
     namespace 'com.factcheckchina.biblioamistadch'
     compileSdk 35
+
     defaultConfig {
         applicationId 'com.factcheckchina.biblioamistadch'
         minSdk 23
@@ -10,6 +14,19 @@ android {
         versionName '1.0'
     }
 }
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.jetbrains.kotlin') {
+            if (details.requested.name == 'kotlin-stdlib' ||
+                details.requested.name == 'kotlin-stdlib-jdk7' ||
+                details.requested.name == 'kotlin-stdlib-jdk8') {
+                details.useVersion '1.8.22'
+            }
+        }
+    }
+}
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.webkit:webkit:1.12.1'
