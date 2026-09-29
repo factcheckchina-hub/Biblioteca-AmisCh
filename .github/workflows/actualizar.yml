@@ -1,7 +1,6 @@
 name: Actualizar biblioteca
 
 on:
-  # A mano: pestaña Actions > Actualizar biblioteca > Run workflow
   workflow_dispatch:
     inputs:
       reintentar_portadas:
@@ -12,10 +11,8 @@ on:
         description: "Publicar aunque falten muchos libros respecto a la vez anterior"
         type: boolean
         default: false
-  # Automático: cada día
   schedule:
     - cron: "17 3 * * *"
-  # Cada vez que cambias algo en la web o en la configuración
   push:
     branches: [main]
     paths:
@@ -23,7 +20,7 @@ on:
       - "config.json"
       - "overrides.json"
       - "scripts/**"
-      
+
 permissions:
   contents: write
   pages: write
@@ -47,6 +44,36 @@ jobs:
 
       - name: Instalar dependencias
         run: pip install -r scripts/requirements.txt
+
+      - name: Preparar extracción de portadas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("scripts/build_catalog.py")
+          s = p.read_text(encoding="utf-8")
+
+          s = s.replace(
+              "webViewLink,shortcutDetails(targetId,targetMimeType)",
+              "webViewLink,resourceKey,shortcutDetails(targetId,targetMimeType)"
+          )
+          s = s.replace(
+              '"web": f.get("webViewLink"),',
+              '"web": f.get("webViewLink"),\n                    "resourceKey": f.get("resourceKey"),'
+          )
+          s = s.replace(
+              '"alt": "media", "supportsAllDrives": "true"',
+              '"alt": "media", "supportsAllDrives": "true", **({"resourceKey": item["resourceKey"]} if item.get("resourceKey") else {})'
+          )
+          old = """return f"https://drive.google.com/uc?export=download&id={item['id']}"""
+          new = """url = f"https://drive.google.com/uc?export=download&id={item['id']}"
+          if item.get("resourceKey"):
+              url += f"&resourcekey={item['resourceKey']}"
+          return url"""
+          s = s.replace(old, new)
+
+          p.write_text(s, encoding="utf-8")
+          print("Preparado build_catalog.py con soporte para resourceKey de Google Drive.")
+          PY
 
       - name: Leer Drive y generar el catálogo
         env:
