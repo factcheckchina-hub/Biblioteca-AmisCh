@@ -33,6 +33,7 @@ concurrency:
 jobs:
   construir:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -44,36 +45,6 @@ jobs:
 
       - name: Instalar dependencias
         run: pip install -r scripts/requirements.txt
-
-      - name: Preparar extracción de portadas
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path("scripts/build_catalog.py")
-          s = p.read_text(encoding="utf-8")
-
-          s = s.replace(
-              "webViewLink,shortcutDetails(targetId,targetMimeType)",
-              "webViewLink,resourceKey,shortcutDetails(targetId,targetMimeType)"
-          )
-          s = s.replace(
-              '"web": f.get("webViewLink"),',
-              '"web": f.get("webViewLink"),\n                    "resourceKey": f.get("resourceKey"),'
-          )
-          s = s.replace(
-              '"alt": "media", "supportsAllDrives": "true"',
-              '"alt": "media", "supportsAllDrives": "true", **({"resourceKey": item["resourceKey"]} if item.get("resourceKey") else {})'
-          )
-          old = """return f"https://drive.google.com/uc?export=download&id={item['id']}"""
-          new = """url = f"https://drive.google.com/uc?export=download&id={item['id']}"
-          if item.get("resourceKey"):
-              url += f"&resourcekey={item['resourceKey']}"
-          return url"""
-          s = s.replace(old, new)
-
-          p.write_text(s, encoding="utf-8")
-          print("Preparado build_catalog.py con soporte para resourceKey de Google Drive.")
-          PY
 
       - name: Leer Drive y generar el catálogo
         env:
@@ -105,6 +76,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
