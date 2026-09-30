@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-name: Actualizar biblioteca
+name: Actualizar_biblioteca
 
 on:
   workflow_dispatch:
